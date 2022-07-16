@@ -18,6 +18,7 @@
       color: $orange;
       border-bottom: 1px dashed $orange;
       cursor: pointer;
+      user-select: none;
     }
   }
 
@@ -30,7 +31,7 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 10px 0;
-    width: 160px;
+    width: 230px;
 
     ul {
       overflow: hidden;
