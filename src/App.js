@@ -11,13 +11,11 @@ function App() {
     <div className="wrapper">
       <Header />
       <div className="content">
-        <div className="container">
-          <Routes>
-            <Route path="/" index element={<Home />} />
-            <Route path="/cart" index element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" index element={<Home />} />
+          <Route path="/cart" index element={<Cart />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </div>
   );

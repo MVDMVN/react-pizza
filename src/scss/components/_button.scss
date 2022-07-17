@@ -94,6 +94,10 @@
     background-color: rgba(255, 255, 255, 0.25);
     margin-left: 14px;
     margin-right: 14px;
+
+    @media screen and (max-width: 650px) {
+      display: none;
+    }
   }
 
   &--add {
@@ -130,6 +134,12 @@
     }
   }
 
+  &__total {
+    @media screen and (max-width: 650px) {
+      display: none;
+    }
+  }
+
   &--cart {
     display: flex;
     align-items: center;
@@ -144,6 +154,11 @@
     span {
       font-weight: 600;
       font-size: 16px;
+    }
+
+    @media screen and (max-width: 650px) {
+      min-width: 80px;
+      padding: 10px 20px;
     }
   }
 }

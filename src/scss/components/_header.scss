@@ -29,4 +29,22 @@
       color: #7b7b7b;
     }
   }
+
+  @media screen and (max-width: 650px) {
+    &__logo {
+      align-items: flex-end;
+
+      img {
+        margin-right: 10px;
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    p {
+      display: none;
+    }
+  }
 }
