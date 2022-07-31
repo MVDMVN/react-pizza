@@ -1,8 +1,35 @@
-import React from "react";
+import { useState, useContext, useRef, useCallback } from "react";
+import debounce from "lodash.debounce";
+import { useDispatch } from "react-redux";
+import { setSearch } from "../../redux/slices/searchSlice";
+import { setCurrentPage } from "../../redux/slices/filterSlice";
 
 import styles from "./Search.module.scss";
 
-function Search({ searchValue, setSearchValue }) {
+const Search = () => {
+  const [value, setValue] = useState("");
+  const dispatch = useDispatch();
+  const inputRef = useRef();
+
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      dispatch(setSearch(str));
+      dispatch(setCurrentPage(1)); // 1 потому что в компоненте пагинации мы передаём currentPage - 1
+    }, 500),
+    []
+  );
+
+  const onClickClear = () => {
+    dispatch(setSearch(""));
+    setValue("");
+    inputRef.current.focus();
+  };
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
   return (
     <div className={styles.root}>
       <svg
@@ -19,14 +46,15 @@ function Search({ searchValue, setSearchValue }) {
         />
       </svg>
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue("")}
+          onClick={onClickClear}
           xmlns="http://www.w3.org/2000/svg"
           height="48"
           viewBox="0 0 48 48"
@@ -39,6 +67,6 @@ function Search({ searchValue, setSearchValue }) {
       )}
     </div>
   );
-}
+};
 
 export default Search;
