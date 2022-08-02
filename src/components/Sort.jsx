@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setSortType } from "../redux/slices/filterSlice";
 
-const list = [
+export const sortItemsList = [
   {
     name: "популярности",
     sortProperty: "rating",
@@ -29,13 +29,28 @@ function Sort() {
   const sort = useSelector((state) => state.filter.sortType);
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
+  const sortRef = useRef();
 
   const onClickListItem = (item) => {
     dispatch(setSortType(item));
     setIsVisible(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setIsVisible(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -55,7 +70,7 @@ function Sort() {
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {list.map((item, index) => (
+            {sortItemsList.map((item, index) => (
               <li
                 key={index}
                 onClick={() => onClickListItem(item)}
