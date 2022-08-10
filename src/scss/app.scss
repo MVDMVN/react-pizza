@@ -26,7 +26,8 @@ body {
   transition: all 0.3s;
 
   &__error-info {
-    margin: 60px auto;
+    margin: 0 auto;
+    padding: 20vh 0;
     max-width: 580px;
     width: 100%;
     text-align: center;
@@ -39,6 +40,25 @@ body {
 
     p {
       font-size: 20px;
+    }
+  }
+
+  &__empty {
+    margin: 0 auto;
+    padding: 20vh 0;
+    max-width: max-content;
+    width: 100%;
+    text-align: center;
+
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    p {
+      font-size: 24px;
+      font-weight: 500;
     }
   }
 

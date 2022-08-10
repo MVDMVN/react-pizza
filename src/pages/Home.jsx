@@ -7,14 +7,17 @@ import {
   setCategoryId,
   setCurrentPage,
   setFilters,
+  selectFilter,
 } from "../redux/slices/filterSlice";
 
-import { setItems, fetchPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzas, selectPizzas } from "../redux/slices/pizzasSlice";
+
+import { selectSearch } from "../redux/slices/searchSlice";
 
 import qs from "qs";
 
 import Categories from "../components/Categories";
-import Sort, { sortItemsList } from "../components/Sort";
+import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
@@ -25,11 +28,9 @@ function Home() {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { categoryId, sortType, currentPage } = useSelector(
-    (state) => state.filter
-  );
-  const search = useSelector((state) => state.search.search);
-  const { pizzasList, status } = useSelector((state) => state.pizzas);
+  const { categoryId, sortType, currentPage } = useSelector(selectFilter);
+  const search = useSelector(selectSearch);
+  const { pizzasList, status } = useSelector(selectPizzas);
 
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -89,7 +90,7 @@ function Home() {
     }
 
     isSearch.current = false;
-  }, []);
+  }, [categoryId, sortType, search, currentPage]);
 
   const pizzasItems = pizzasList.map((pizza) => (
     <PizzaBlock {...pizza} key={pizza.id} />
@@ -107,7 +108,15 @@ function Home() {
             <Sort />
           </div>
         )}
-        {status !== "error" && <h2 className="content__title">Все пиццы</h2>}
+        {status !== "error" && pizzasItems.length > 0 && (
+          <h2 className="content__title">Все пиццы</h2>
+        )}
+        {pizzasItems.length <= 0 && (
+          <div className="content__empty">
+            <h2>Похоже, у нас нет пиццы, которую вы ищете. 😱</h2>
+            <p>Попробуйте поискать что-то другое.</p>
+          </div>
+        )}
         {status === "error" ? (
           <div className="content__error-info">
             <h2>Произошла ошибка 😕</h2>
@@ -121,7 +130,7 @@ function Home() {
             {status === "loading" ? skeletons : pizzasItems}
           </div>
         )}
-        {status !== "error" && (
+        {status !== "error" && pizzasItems.length > 0 && (
           <Pagination currentPage={currentPage} onChangePage={onChangePage} />
         )}
       </div>
